@@ -4,15 +4,16 @@ const bcrypt=require('bcryptjs');
 const cors=require('cors');
 const { response } = require("express");
 
-
+require('dotenv').config();
+console.log(process.env);
 const knex = require('knex')
 
 const db=knex({
     client: 'pg',
     connection: {
-        host: '127.0.0.1',
+        host: 'localhost',
         user : 'postgres',
-        password :'',
+        password :process.env.PASSWORD,
         database : 'test1'
         // connectionString : process.env.DATABASE_URL,
         // ssl:{ rejectUnauthorized: false },
@@ -34,8 +35,8 @@ app.get("/",(req,res)=>{
     res.json("it is working");
 })
 
-app.post('/signin',(req,res)=>{
-    
+app.post('/signin/',(req,res)=>{
+    console.log("signin working")
     db.select('email','hash').from('login')
     .where('email','=',req.body.email)
     .then(data=>{
@@ -56,7 +57,8 @@ app.post('/signin',(req,res)=>{
     .catch(err => res.status(400).json(`wrong credentials ${err}`))
 })
 
-app.post('/register',async (req,res)=>{
+app.post('/register/',async (req,res)=>{
+    console.log("register working")
     const { email , name , password }=req.body; 
     console.log(req)
     const salt = await bcrypt.genSaltSync(10);
@@ -92,7 +94,7 @@ app.post('/register',async (req,res)=>{
 
 })
 
-app.get("/profile/:id",(req,res)=>{
+app.get("/profile/:id/",(req,res)=>{
     const { id } = req.params;
     
    db.select('*').from('users').where({id}).then(user=>{
@@ -115,7 +117,7 @@ app.get("/profile/:id",(req,res)=>{
 })
 
 
-app.put('/image',(req,res)=>{
+app.put('/image/',(req,res)=>{
     const { id } = req.body;
     db('users').where('id','=',id)
     .increment('entries',1)
