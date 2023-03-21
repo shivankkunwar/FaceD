@@ -1,90 +1,77 @@
 import Navigation from './components/Navigation/navigation'
 import './App.css';
-import React ,{ Component } from 'react';
+import React ,{ useState } from 'react';
 
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
 
 import NewFaceCode from './components/NewFaceCode/NewFaceCode';
 
-class App extends Component{
+function App(){
 
-  constructor(){
-    super();
-    this.state={
-      input:'',
-      
-      route:'signIn',
-      isSignedIn:false,
-      user:{
-      id:'',
-      name:'',
-      email:'',
-      password: '',
-      entries: '0',
-      joined:'new Date()'
-    }
-    }
-  }
+  const [input, setInput] = useState('');
+  const [route, setRoute] = useState('signIn');
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  //user details
+  const [id, setId] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [entries, setEntries] = useState(0);
+  const [joined, setJoined] = useState(new Date());
+
   
- changeEntries=({entries})=>{
+ const changeEntries=({entries})=>{
   
   
-  this.setState(Object.assign(this.state.user, { entries: entries}))
+  setEntries(entries);
   
 }
  
   
 
-  displayFaceBox = (box) => {
-    this.setState({box: box})
-  }
 
-  loadUser=(data)=>{
-    this.setState({user:{
-      id:data.id,
-      name:data.name,
-      email:data.email,
-     
-      entries:data.entries,
-      joined:data.joined
-    }})
+
+ const loadUser=(data)=>{
+
+    setId(data.id);
+    setName(data.name);
+    setEmail(data.email);
+    setEntries(data.entries);
+    setJoined(data.joined);
+    
   }
   
 
-  onInputChange=(event)=>{
-     this.setState({input:event.target.value})
-  }
-  onSubmit=()=>{
-    console.log('click');
-  }
+
 
   
 
-  onRouteChange=(Route)=>{
+ const onRouteChange=(Route)=>{
     if(Route==='signOut'){
-      this.setState({isSignedIn: false})
-      this.setState({imageUrl: ''})
+      setIsSignedIn(false);
+      
+      
     }else if(Route==='home'){
-      this.setState({isSignedIn: true})
+      setIsSignedIn(true);
     }
-    this.setState({route:Route})
+    setRoute(Route);
   }
-  render(){
-    const {  route, isSignedIn  } =this.state ;
+  
+    
     return(
       
       <div className='App'>
        
-        <Navigation isSignedIn={isSignedIn}  onRouteChange={this.onRouteChange} />
+        <Navigation isSignedIn={isSignedIn}  onRouteChange={onRouteChange} />
         {
 
           (route==='home')
           ?
           <div>
             
-            <NewFaceCode name={this.state.user.name}
-            entries={this.state.user.entries} id={this.state.user.id} changeEntries={this.changeEntries} />
+            <NewFaceCode name={name}
+            entries={entries} id={id} changeEntries={changeEntries} />
        
           
         
@@ -94,9 +81,9 @@ class App extends Component{
           :(
             route==='signIn'
           ?
-          <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+          <SignIn loadUser={loadUser} onRouteChange={onRouteChange}/>
           :
-          <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+          <Register loadUser={loadUser} onRouteChange={onRouteChange}/>
           )
 
         }
@@ -104,7 +91,7 @@ class App extends Component{
       </div>
     );
   }
-}
+
 
 
 // function App() {

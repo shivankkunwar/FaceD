@@ -1,25 +1,29 @@
-import React,{useState} from 'react';
+import React from 'react';
 import "./SignIn.css"
-function SignIn (props){
-   
-    const [signInEmail, setSignInEmail] = useState('');
-    const [signInPassWord, setSignInPassWord] = useState('');
-   const onEmailChange=(event)=>{
-        setSignInEmail(event.target.value);
-    
+class SignIn extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            signInEmail: '',
+            signInPassWord: ''
+        }
     }
 
-   const onPasswordChange=(event)=>{
-        setSignInPassWord(event.target.value);
+    onEmailChange=(event)=>{
+        this.setState({signInEmail:event.target.value})
+    }
+
+    onPasswordChange=(event)=>{
+        this.setState({signInPassWord:event.target.value})
     }
     
-   const  onSubmitSignIn =()=>{
+    onSubmitSignIn =()=>{
         fetch('http://localhost:3000/signin', {
             method: 'post',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({
-                email:signInEmail,
-                password:signInPassWord
+                email:this.state.signInEmail,
+                password:this.state.signInPassWord
             })
         })
         .then(response=>response.json())
@@ -27,9 +31,9 @@ function SignIn (props){
             
             if(user.id){
                 
-                props.loadUser(user)
+                this.props.loadUser(user)
               
-               props.onRouteChange('home');
+               this.props.onRouteChange('home');
             } 
         })
         
@@ -37,8 +41,8 @@ function SignIn (props){
     }
     
     
-   
-        const { onRouteChange } = props;
+    render(){
+        const { onRouteChange } = this.props;
         return(
             <article className=" txt bgN  b br3 ba  b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-2 center">
             <main className="pa4 black-80 bgN ">
@@ -51,7 +55,7 @@ function SignIn (props){
                     type="email"
                     name="email-address"  
                     id="email-address"
-                    onChange={onEmailChange}
+                    onChange={this.onEmailChange}
                     />
                 </div>
                 <div className="mv3">
@@ -60,14 +64,14 @@ function SignIn (props){
                     type="password" 
                     name="password"  
                     id="password"
-                    onChange={onPasswordChange}
+                    onChange={this.onPasswordChange}
                     />
                 </div>
                 
                 </fieldset>
                 <div className="">
                 <input
-                    onClick={onSubmitSignIn}
+                    onClick={this.onSubmitSignIn}
                     className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                     type="submit" 
                     value="Sign in"/>
@@ -87,5 +91,5 @@ function SignIn (props){
             
       
     
-
+}
 export default SignIn;

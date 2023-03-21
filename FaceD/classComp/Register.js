@@ -1,42 +1,47 @@
-import React ,{useState}from 'react';
+import React from 'react';
 import "./Register.css"
-function Register (props){
-    //states
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
+class Register extends React.Component{
 
-    const onEmailChange=(event)=>{
-        setEmail(event.target.value);
-    }
-    const onPasswordChange=(event)=>{
-        setPassword(event.target.value);
-    }
-   const onNameChange=(event)=>{
-        setName(event.target.value);
+    constructor(props){
+        super(props);
+        this.state={
+            email:'',
+            password:'',
+            name:''
+        }
     }
 
-    const onSubmitRegistration=()=>{
+    onEmailChange=(event)=>{
+        this.setState({email: event.target.value})
+    }
+    onPasswordChange=(event)=>{
+        this.setState({password:event.target.value})
+    }
+    onNameChange=(event)=>{
+        this.setState({name:event.target.value})
+    }
+
+    onSubmitRegistration=()=>{
         fetch('http://localhost:3000/register', {
             method: 'post',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({
-                email:email,
-                password:password,
-                name:name
+                email:this.state.email,
+                password:this.state.password,
+                name:this.state.name
             })
         })
         .then(response=>response.json())
         .then( user =>{
           if(user.id){
-            props.loadUser(user);
-            props.onRouteChange('home');
+            this.props.loadUser(user);
+            this.props.onRouteChange('home');
           } 
         }).catch(err=>console.log(`error here ${err}`))
         
     }
    
-    
+    render(){
         //const { onRouteChange} = this.props.onRouteChange;
         return (
             <article className=" bgN br3 ba  b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
@@ -51,7 +56,7 @@ function Register (props){
                     type="text" 
                     name="name"  
                     id="name"
-                    onChange={onNameChange}
+                    onChange={this.onNameChange}
                     />
                 </div>
                 <div className="mt3">
@@ -61,7 +66,7 @@ function Register (props){
                      type="email" 
                      name="email-address"  
                      id="email-address"
-                     onChange={onEmailChange}
+                     onChange={this.onEmailChange}
                      />
                 </div> 
                 <div className="mv3">
@@ -70,7 +75,7 @@ function Register (props){
                     type="password" 
                     name="password"  
                     id="password"
-                    onChange={onPasswordChange}
+                    onChange={this.onPasswordChange}
                     />
                 </div>
                 
@@ -78,7 +83,7 @@ function Register (props){
                 <div className="">
                 <input
                     // onClick={()=>onRouteChange('home')}
-                    onClick={onSubmitRegistration}
+                    onClick={this.onSubmitRegistration}
                     className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                     type="submit" 
                     value="Register"/>
@@ -93,5 +98,5 @@ function Register (props){
         
     
    
-
+}
 export default Register;
