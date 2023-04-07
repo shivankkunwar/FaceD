@@ -9,14 +9,14 @@ import NewFaceCode from './components/NewFaceCode/NewFaceCode';
 
 function App(){
 
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState<string>('');
   const [route, setRoute] = useState<string>('signIn');
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
   //user details
-  const [id, setId] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [id, setId] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [entries, setEntries] = useState<number>(0);
   const [joined, setJoined] = useState(new Date());
 
