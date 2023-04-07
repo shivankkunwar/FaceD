@@ -1,18 +1,22 @@
 import React ,{useState}from 'react';
 import "./Register.css"
-function Register (props){
+type registerTypes={
+    loadUser:any,
+    onRouteChange:any
+}
+function Register (props:registerTypes){
     //states
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
 
-    const onEmailChange=(event)=>{
+    const onEmailChange=(event:any)=>{
         setEmail(event.target.value);
     }
-    const onPasswordChange=(event)=>{
+    const onPasswordChange=(event:any)=>{
         setPassword(event.target.value);
     }
-   const onNameChange=(event)=>{
+   const onNameChange=(event:any)=>{
         setName(event.target.value);
     }
 

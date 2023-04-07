@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Rank=({ name, entries })=>{
+const Rank=({ name, entries }:{name:string,entries:number})=>{
     return (
       <div >
             <div className='Black  f3'>

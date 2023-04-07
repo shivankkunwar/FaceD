@@ -3,13 +3,24 @@ import React from 'react';
 import {useState ,useEffect } from 'react';
 import Logo from '../Logo/Logo';
 import NewPost from './components/NewPost';
-import './App.css'
-
-function NewFaceCode({name,id,entries,changeEntries}) {
-  const [file, setFile] = useState();
-  const [image, setImage] = useState();
+import './App2.css'
+type faceCodeType={
+  name:string,
+  id:string,
+  entries:number,
+  changeEntries:any
+}
+type imageType={
+  url:string,
+  width:number,
+  height:number
+}
+function NewFaceCode({name,id,entries,changeEntries}:faceCodeType) {
+  const [file, setFile] = useState<any | null>();
+  const [image, setImage] = useState<any>();
 
   useEffect(() => {
+    console.log("ue")
     const getImage = () => {
       const img = new Image();
       img.src = URL.createObjectURL(file);
@@ -25,6 +36,7 @@ function NewFaceCode({name,id,entries,changeEntries}) {
     file && getImage();
   }, [file]);
   const fetchingCount=()=>{
+      console.log("fc")
             fetch('http://localhost:3000/image',{
               method: 'put',
               headers: {'Content-Type':'application/json'},
@@ -41,6 +53,7 @@ function NewFaceCode({name,id,entries,changeEntries}) {
 })
   } 
   const Redirect=()=>{
+    console.log("rd")
     setImage(null);
     console.log("redirct worked")
     console.log(file)
@@ -69,8 +82,11 @@ function NewFaceCode({name,id,entries,changeEntries}) {
                       className='postInput'   />
                       <input 
                        onChange={(e) => {
+                        if (e.target.files) {
                         setFile(e.target.files[0])
                         fetchingCount()
+                        }
+                          
                         }
                         //as the new Face is detected update the entries count and display
                               

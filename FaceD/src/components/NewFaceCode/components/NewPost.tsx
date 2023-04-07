@@ -1,21 +1,38 @@
 import React from 'react'
 import { useState,useRef,useEffect } from 'react'
 import * as faceapi from "face-api.js";
-const NewPost = ({image,Redirect, name ,id,entries,changeEntries }) => {
+type imageType={
+  url:string,
+  width:number,
+  height:number
+}
+type newPostType={
+  image:imageType,
+  Redirect:any,
+  name:string,
+  id :string,
+  entries:any,
+  changeEntries:any
+}
+// type faceType={
+//   x:number, y:number, width:number, height:number
+// } this was un nessasary
+
+const NewPost = ({image,Redirect, name ,id,entries,changeEntries }:newPostType) => {
 
   const { url , width, height} = image;
-  const [faces, setFaces] = useState([]);
+  const [faces, setFaces] = useState<any[]>([]);
+//face gets a array having 4 component x,y,width,height as 0,1,2,3 position of array
 
-
-  const imgRef= useRef();
-  const canvasRef=useRef();
+  const imgRef= useRef<any>();
+  const canvasRef=useRef(null);
   // manipulating canvas dimenstion from api to fit the Face
   const handleImage = async()=>{
     
     const detections= await faceapi
                       .detectAllFaces(imgRef.current,new faceapi.TinyFaceDetectorOptions())
                       
-    
+    console.log(detections)
     setFaces(detections.map((d)=> Object.values(d.box)));
    
     // canvasRef.current.innerHtml =faceapi.createCanvasFromMedia(imgRef.current);   
@@ -36,10 +53,14 @@ const NewPost = ({image,Redirect, name ,id,entries,changeEntries }) => {
  
   //function to Draw canvas
   const enter = () => {
-    const ctx = canvasRef.current.getContext("2d");
+    if(!canvasRef.current)return;
+    const cur=canvasRef.current as HTMLCanvasElement;
+    const ctx = cur.getContext("2d");
+    if(!ctx)return;
     ctx.lineWidth = 20;
     ctx.strokeStyle = "yellow";
-    faces.map((face) => ctx.strokeRect(...face));
+    console.log(faces)
+    faces.map((face) => ctx.strokeRect(face[0],face[1],face[2],face[3]));
     
    
     
@@ -78,7 +99,7 @@ const NewPost = ({image,Redirect, name ,id,entries,changeEntries }) => {
           </div>
 
           <div className="right">
-              <p className='MainText' style={{'fontSize':'2rem'}}>Session : {entries}</p>
+              <p className='MainText' style={{'fontSize':'2rem'}}>Session : {entries.entries}</p>
               <h1 className='MainText' style={{'fontSize':'4rem','margin':'1rem'}}>{name}! You have Detected  </h1>
               <h2 className='MainText' style={{'fontSize':'3rem'}}>Faces: {faces.length}</h2>
               <button className='rightButton' onClick={Redirect}>Try again?</button>

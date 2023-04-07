@@ -1,5 +1,5 @@
 import Navigation from './components/Navigation/navigation'
-import './App.css';
+import './App2.css';
 import React ,{ useState } from 'react';
 
 import SignIn from './components/SignIn/SignIn';
@@ -10,18 +10,26 @@ import NewFaceCode from './components/NewFaceCode/NewFaceCode';
 function App(){
 
   const [input, setInput] = useState('');
-  const [route, setRoute] = useState('signIn');
+  const [route, setRoute] = useState<string>('signIn');
   const [isSignedIn, setIsSignedIn] = useState(false);
   //user details
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [entries, setEntries] = useState(0);
+  const [entries, setEntries] = useState<number>(0);
   const [joined, setJoined] = useState(new Date());
 
-  
- const changeEntries=({entries})=>{
+ type dataType ={
+    id:string,
+    name:string,
+    email:string,
+    entries:number
+ } 
+ type routeTypes={
+    Route:'signOut'|'home'|'signIn'|'register';
+ }
+ const changeEntries=(entries:number)=>{
   
   
   setEntries(entries);
@@ -32,13 +40,13 @@ function App(){
 
 
 
- const loadUser=(data)=>{
+ const loadUser=(data:dataType)=>{
 
     setId(data.id);
     setName(data.name);
     setEmail(data.email);
     setEntries(data.entries);
-    setJoined(data.joined);
+    
     
   }
   
@@ -47,7 +55,7 @@ function App(){
 
   
 
- const onRouteChange=(Route)=>{
+ const onRouteChange=(Route:'signOut'|'home'|'signIn'|'register')=>{
     if(Route==='signOut'){
       setIsSignedIn(false);
       
@@ -55,6 +63,7 @@ function App(){
     }else if(Route==='home'){
       setIsSignedIn(true);
     }
+   
     setRoute(Route);
   }
   
