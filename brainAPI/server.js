@@ -36,7 +36,7 @@ app.get("/",(req,res)=>{
 })
 
 app.post('/signin/',(req,res)=>{
-    console.log("signin working")
+    
     db.select('email','hash').from('login')
     .where('email','=',req.body.email)
     .then(data=>{
