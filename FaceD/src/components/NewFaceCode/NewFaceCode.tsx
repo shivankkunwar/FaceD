@@ -20,7 +20,7 @@ function NewFaceCode({name,id,entries,changeEntries}:faceCodeType) {
   const [image, setImage] = useState<any>();
 
   useEffect(() => {
-    console.log("ue")
+   
     const getImage = () => {
       const img = new Image();
       img.src = URL.createObjectURL(file);
